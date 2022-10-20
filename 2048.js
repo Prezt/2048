@@ -1,158 +1,174 @@
-export const generateEmptyBoard = () => [
-  [0, 0, 0, 0],
-  [0, 0, 0, 0],
-  [0, 0, 0, 0],
-  [0, 0, 0, 0],
-];
+function generateEmptyBoard () {
+  return(
+    [
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+    ]
+  );
+}
 
-export const generateRandomOneOf = (a, b, chanceOfA) =>
-  Math.random() >= chanceOfA ? a : b;
+function generateRandomOneOf(a, b, chanceOfA) {
+  return Math.random() <= chanceOfA ? a : b;
+}
 
-export const generateNumberBetween = (min, max) =>
-  Math.floor(Math.random() * (max - min) + min);
+function generateNumberBetween (min, max){
+  return Math.floor(Math.random() * (max - min) + min);
+}
 
-export const generateRandomTile = (board, score) => {
+var gameState = {
+  board: [
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+  ],
+  score: 0
+}
+
+function generateRandomTile() {
   let row = generateNumberBetween(0, 3);
   let col = generateNumberBetween(0, 3);
-  while (board[row][col] !== 0) {
+  while (gameState.board[row][col] !== 0) {
     row = generateNumberBetween(0, 3);
     col = generateNumberBetween(0, 3);
   }
-  board[row][col] = generateRandomOneOf(2, 4, 0.9);
+  gameState.board[row][col] = generateRandomOneOf(2, 4, 0.9);
 };
 
-export const printGame = (board, score) => {
+function printGame  () {
   console.log(`SCORE: ${score}\n+---+---+---+---+`);
   for (let row = 0; row < 4; row++) {
     console.log(
       "|",
-      board[row][0],
+      gameState.board[row][0],
       "|",
-      board[row][1],
+      gameState.board[row][1],
       "|",
-      board[row][2],
+      gameState.board[row][2],
       "|",
-      board[row][3],
+      gameState.board[row][3],
       "|"
     );
     console.log("+---+---+---+---+");
   }
 };
-
-export const stack = (board, score) => {
+function stack () {
   const newBoard = generateEmptyBoard();
   for (let row = 0; row < 4; row++) {
     let stackCount = 0;
     for (let col = 0; col < 4; col++) {
-      if (board[row][col] !== 0) {
-        newBoard[row][stackCount] = board[row][col];
+      if (gameState.board[row][col] !== 0) {
+        newBoard[row][stackCount] = gameState.board[row][col];
         stackCount++;
       }
     }
   }
-  board = newBoard;
+  gameState.board = newBoard;
 };
 
-export const merge = (board, score) => {
+function merge() {
   for (let row = 0; row < 4; row++) {
     for (let col = 0; col < 3; col++) {
-      if (board[row][col] === board[row][col + 1]) {
-        board[row][col] *= 2;
-        board[row][col + 1] = 0;
-        score += board[row][col];
+      if (gameState.board[row][col] === gameState.board[row][col + 1]) {
+        gameState.board[row][col] *= 2;
+        gameState.board[row][col + 1] = 0;
+        gameState.score += gameState.board[row][col];
       }
     }
   }
 };
 
-export const flipVertical = (board, score) => {
+function flipVertical() {
   const newBoard = generateEmptyBoard();
   for (let row = 0; row < 4; row++) {
     for (let col = 0; col < 4; col++) {
-      newBoard[row][col] = board[row][3 - col];
+      newBoard[row][col] = gameState.board[row][3 - col];
     }
   }
-  board = newBoard;
+  gameState.board = newBoard;
 };
 
-export const transpose = (board, score) => {
+function transpose () {
   const newBoard = generateEmptyBoard();
   for (let row = 0; row < 4; row++) {
     for (let col = 0; col < 4; col++) {
-      newBoard[row][col] = board[col][row];
+      newBoard[row][col] = gameState.board[col][row];
     }
   }
-  board = newBoard;
+  gameState.board = newBoard;
 };
 
-const moveLeft = (board, score) => {
-  stack(board, score);
-  merge(board, score);
-  stack(board, score);
-  generateRandomTile(board, score);
+function moveLeft () {
+  stack();
+  merge();
+  stack();
+  updateGameState();
 };
 
-const moveRight = (board, score) => {
-  flipVertical(board, score);
-  stack(board, score);
-  merge(board, score);
-  stack(board, score);
-  flipVertical(board, score);
-  generateRandomTile(board, score);
+function moveRight () {
+  flipVertical();
+  stack();
+  merge();
+  stack();
+  flipVertical();
+  updateGameState();
 };
 
-const moveUp = (board, score) => {
-  transpose(board, score);
-  stack(board, score);
-  merge(board, score);
-  stack(board, score);
-  transpose(board, score);
-  generateRandomTile(board, score);
+function moveUp () {
+  transpose();
+  stack();
+  merge();
+  stack();
+  transpose();
+  updateGameState();
 };
 
-const moveDown = (board, score) => {
-  transpose(board, score);
-  flipVertical(board, score);
-  stack(board, score);
-  merge(board, score);
-  stack(board, score);
-  flipVertical(board, score);
-  transpose(board, score);
-  generateRandomTile(board, score);
+function moveDown () {
+  transpose();
+  flipVertical();
+  stack();
+  merge();
+  stack();
+  flipVertical();
+  transpose();
+  updateGameState();
 };
 
-var board;
-var score = 0;
-window.onload = () => {
-  setGameBoard();
-};
-
-const setGameBoard = () => {
-  //   board = generateEmptyBoard();
-  board = [
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-  ];
-  board[0][0] = 2;
-
+function setGameBoard () {
   for (let i = 0; i < 4; i++) {
     for (let j = 0; j < 4; j++) {
       let tile = document.createElement("div");
       tile.id = `${i.toString()}-${j.toString()}`;
-      let num = board[i][j];
+      let num = gameState.board[i][j];
       updateTile(tile, num);
       document.getElementById("board").append(tile);
     }
   }
 };
 
-const updateTile = (tile, num) => {
+function updateGameState () {
+  for (let i = 0; i < 4; i++) {
+    for (let j = 0; j < 4; j++) {
+      let tile = document.getElementById(`${i.toString()}-${j.toString()}`);
+      let num = gameState.board[i][j];
+      updateTile(tile, num);
+    }
+  }
+  updateScore()
+}
+
+function updateScore () {
+  let screenScore = document.getElementById("score")
+  screenScore.innerHTML = gameState.score
+}
+
+function updateTile (tile, num) {
   tile.innerText = "";
   tile.classList.value = "";
   tile.classList.add("tile");
-  tile.innerText = num;
+  if(num > 0) tile.innerText = num;
   if (num >= 16384) {
     tile.classList.add("xMAX2");
   } else if (num >= 4096) {
@@ -162,8 +178,43 @@ const updateTile = (tile, num) => {
   }
 };
 
-document.addEventListener("keyup", (e) => {
-  if (e.code === "arrowLeft") {
-    moveLeft(board, score);
+
+window.onload = () => {
+  generateRandomTile();
+  generateRandomTile();
+  setGameBoard();
+};
+
+function makeMove (e) {
+  switch (e.code){
+    case "ArrowLeft": 
+    case "KeyA": {
+      moveLeft();
+      generateRandomTile();
+      break;
+    }
+    case "ArrowRight":
+    case "KeyD": {
+      moveRight();
+      generateRandomTile();
+      break;
+    }
+    case "ArrowUp":
+    case "KeyW": {
+      moveUp();
+      generateRandomTile();
+      break;
+    }
+    case "ArrowDown":
+    case "KeyS": {
+      moveDown();
+      generateRandomTile();
+      break;
+    }
+    default:{
+    } 
   }
-});
+
+}
+
+window.addEventListener("keyup", makeMove);

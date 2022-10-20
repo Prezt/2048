@@ -4,16 +4,20 @@ body {
 }
 
 hr {
-    width: 500px;
+    width: 800px;
+}
+
+h1 {
+    font-size: 100px;
 }
 
 #board{
-    width: 400px;
-    height: 400px;
+    width: 620px;
+    height: 620px;
 
     background-color: #bbada0;
-    border: 6px solid #bbada0;
-    border-radius: 5px;
+    border: 9px solid #bbada0;
+    border-radius: 8px;
 
     margin: 0 auto;
     display: flex;
@@ -21,12 +25,12 @@ hr {
 }
 
 .tile {
-    width: 90px;
-    height: 90px;
-    border: 5px solid #bbada0;
-    border-radius: 10px;
+    width: 135px;
+    height: 135px;
+    border: 10px solid #bbada0;
+    border-radius: 15px;
 
-    font-size: 40px;
+    font-size: 75px;
     font-weight: bold;
     display: flex;
     justify-content: center;
@@ -39,11 +43,11 @@ hr {
 }
 .x2 {
     background-color: #eee4da;
-    color: #222222;
+    color: #776e65;
 }
 .x4 {
-    background-color: #ede0c8;
-    color: #222222;
+    background-color: #eee1c9;
+    color: #776e65;
 }
 .x8 {
     background-color: #f2b179;
@@ -77,23 +81,23 @@ hr {
     color: white;
 }
 .x1024 {
-    font-size: 35px;
+    font-size: 60px;
     background-color: #edc53f;
     color: white;
 }
 .x2048 {
-    font-size: 35px;
+    font-size: 60px;
     background-color: #edc22e;
     color: white;
 }
 
 .xMAX {
-    font-size: 35px;
+    font-size: 60px;
     background-color: #3c3a32;
     color: white;
 }
 .xMAX2 {
-    font-size: 30px;
+    font-size: 55px;
     background-color: #3c3a32;
     color: white;
 }
