@@ -214,7 +214,6 @@ function calculateAllMoves() {
             moves.left[i][j] = [0-calculateMoveLeft(leftRow, j), 0];
         }
     }
-    
     for (let i = 0; i < size.rows; i++) {
         const rightRow = [gameState.board[i][3], gameState.board[i][2], gameState.board[i][1], gameState.board[i][0]];
         for (let j = 0; j < size.columns; j++){
@@ -350,15 +349,15 @@ function updateGameState () {
     }
     updateScore();
     const moves = calculateAllMoves();
-    console.log('         MOVES');
-    console.log('left');
-    printGameBoard(moves.left);
-    console.log('right');
-    printGameBoard(moves.right);
-    console.log('up');
-    printGameBoard(moves.up);
-    console.log('down');
-    printGameBoard(moves.down);
+    // console.log('         MOVES');
+    // console.log('left');
+    // printGameBoard(moves.left);
+    // console.log('right');
+    // printGameBoard(moves.right);
+    // console.log('up');
+    // printGameBoard(moves.up);
+    // console.log('down');
+    // printGameBoard(moves.down);
 }
 
 function setNewGameBoard () {
